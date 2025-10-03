@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -22,15 +24,11 @@ class LoginController extends Controller
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
-        // Mínimo: regresar datos del usuario (sin token)
-        return response()->json([
-            'user' => [
-                'id'        => $user->id,
-                'name'      => $user->name,
-                'last_name' => $user->last_name,
-                'email'     => $user->email,
-            ],
-            'status' => 'OK'
+        $token =$user->createToken($credentials['email'])->plainTextToken;
+
+       return response()->json([        
+            "message" => "Login Successful",
+            "token"=> $token
         ]);
     }
 }

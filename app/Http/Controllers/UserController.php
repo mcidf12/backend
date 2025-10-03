@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         //
         $data=$request->validate(self::$rules);
-         $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
         $user = DB::transaction(fn() => User::create($data));
 
