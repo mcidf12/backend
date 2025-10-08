@@ -42,7 +42,46 @@ class UserController extends Controller
     public function show($id)
     {
         //
+         $user = User::findOrFail($id);
+        
+        return response()->json([
+            'status' => 'success',
+            'cliente' => [
+                'cliente'         => '01804',
+                'nombre'          => strtoupper($user->name).' '.strtoupper($user->last_name ?? ''),
+                'direccion'       => 'JOSE VALENTIN DAVILA #401',
+                'pais'            => 'Mexico',
+                'estado'          => 'MEXICO',
+                'municipio'       => 'JOCOTITLAN',
+                'colonia'         => 'JOCOTITLAN',
+                'correo'          => $user->email,
+                'telefono'        => '7121748293',
+                'coordenadas'     => '',
+                'planInternet'    => 'PLAN200',
+                'nombrePlan'      => 'Plan 200 Megas Fibra',
+                'clasificacion'   => 'IFO',
+                'desClasificacion'=> 'FIBRA ÓPTICA',
+                'router'          => '1',
+                'infoRed' => [
+                    'router'      => 'IXTLAHUACA',
+                    'address'     => '172.16.31.123',
+                    'estado'      => 'Activo',
+                    'estadoFibra' => 'bound'
+                ],
+                'deuda' => 200,
+            ],
+            'servicios' => [
+                'estadoCuenta' => [
+                    ['VENTA' => '240042','fechaEmision' => '06-08-2025','importe' => '500.0','mensualidad' => 'AGO 2025'],
+                    ['VENTA' => '246117','fechaEmision' => '05-09-2025','importe' => '600.0','mensualidad' => 'SEP 2025'],
+                    ['VENTA' => '253512','fechaEmision' => '06-10-2025','importe' => '400.0','mensualidad' => 'OCT 2025'],
+                ],
+                'internet' => ['precio' => 400],
+                'camaras'  => ['canServicios' => 2, 'precio' => 50],
+            ],
+        ]);
     }
+    
 
     public function update(Request $request, $id)
     {
