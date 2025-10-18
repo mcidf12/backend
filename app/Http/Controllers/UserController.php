@@ -13,11 +13,19 @@ class UserController extends Controller
 
 
     public static $rules = [
-            'name'      => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email'     => 'required|string|max:255|unique:users,email',
-            'password'  => 'required|string|min:8',
-        ];
+        'name'      => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email'     => 'required|string|max:255|unique:users,email',
+        'password'  => 'required|string|min:8',
+    ];
+
+    public static $rulesUpdate = [
+        'name'      => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email'     => 'required|string|max:255|unique:users,email',
+        'password'  => 'string|min:8',
+
+    ];
 
     public function index()
     {
@@ -56,7 +64,7 @@ class UserController extends Controller
                 'colonia'         => 'JOCOTITLAN',
                 'correo'          => $user->email,
                 'telefono'        => '7121748293',
-                'coordenadas'     => '',
+                'coordenadas'     => '19.569008, -99.756175',
                 'planInternet'    => 'PLAN200',
                 'nombrePlan'      => 'Plan 200 Megas Fibra',
                 'clasificacion'   => 'IFO',
@@ -68,7 +76,7 @@ class UserController extends Controller
                     'estado'      => 'Activo',
                     'estadoFibra' => 'bound'
                 ],
-                'deuda' => 200,
+                'deuda' => 0,
             ],
             'servicios' => [
                 'estadoCuenta' => [
@@ -77,7 +85,9 @@ class UserController extends Controller
                     ['VENTA' => '253512','fechaEmision' => '06-10-2025','importe' => '400.0','mensualidad' => 'OCT 2025'],
                 ],
                 'internet' => ['precio' => 400],
-                'camaras'  => ['canServicios' => 2, 'precio' => 50],
+                'camaras'  => ['canServicios' => 0, 'precio' => 50],
+                'telefonia'  => ['lineas' => 0, 'precio' => 150],
+
             ],
         ]);
     }
@@ -87,12 +97,16 @@ class UserController extends Controller
     {
         //
         $user = User::findOrFail($id);
-        $validated = $request->validate(array_merge(self::$rules, [
+        //$user = $request->user();
+
+        $validated = $request->validate(array_merge(self::$rulesUpdate, [
             'email' => ['sometimes','required','email','max:255', Rule::unique('users','email')->ignore($user->id)],
         ]));
 
-        if (isset($validated['password'])) {
+        if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
         DB::transaction(fn() => $user->update($validated));

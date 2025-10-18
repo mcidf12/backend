@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RecoveryPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,10 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('usuarios',UserController::class);
-Route::get('usuarios/{id}', [UserController::class, 'show'])->middleware('auth:sanctum');
+
+Route::post('auth/recoverPassword', [RecoveryPasswordController::class,  'sendEmail']);
 
 Route::post('auth/login', LoginController::class);
 
-Route::post('auth/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('auth/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
 
 //Route::get('/ruta-con-log', function () {return 'Esta ruta registrará sus encabezados';})->middleware('logear.encabezados');
