@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('usuarios',UserController::class);
 
 Route::post('auth/recoverPassword', [RecoveryPasswordController::class,  'sendEmail']);
+Route::put('auth/updatePassword', [RecoveryPasswordController::class,  'updatePassword']);
 
 Route::post('auth/login', LoginController::class);
 

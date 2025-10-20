@@ -8,12 +8,14 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class RecoverPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $token;
+    public $url;
 
     /**
      * Create a new message instance.
@@ -23,7 +25,10 @@ class RecoverPasswordMail extends Mailable
     public function __construct($token)
     {
         //
-        $this->token = $token;
+        $this->token = is_object($token) ? (string) ($token->token ?? json_encode($token)) : (string) $token;
+
+        $this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
+        //Log::info('Recover URL: ' . $this->url);
     }
 
     /**
@@ -48,7 +53,8 @@ class RecoverPasswordMail extends Mailable
     return new Content(
         markdown: 'Email.passwordRecover',
         with: [
-            'token' => $this->token
+            'token' => $this->token,
+            'url'   => $this->url,
         ]);
     }
 

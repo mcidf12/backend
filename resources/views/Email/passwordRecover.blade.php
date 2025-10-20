@@ -1,11 +1,16 @@
 <x-mail::message>
-# Cambio de contraseña
+Emenet Comunicaciones
 
-Click en el boton para cambiar la contraseña
+Restablecer contrasña
 
-<x-mail::button :url="'http://localhost:4200/response-password?token=' . $token">
-Reset Password
+
+Hemos recibido una solicitud para restablecer tu contraseña, haz click en el siguiente boton para crear una nueva contraseña
+
+<x-mail::button :url="$url">
+Restablecer contraseña
 </x-mail::button>
+
+Si no has sido tú quien envio la solicitudad, no hagas caso a este correo
 
 Thanks,<br>
 {{ config('app.name') }}
