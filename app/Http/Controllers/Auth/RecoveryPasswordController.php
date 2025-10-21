@@ -20,7 +20,7 @@ class RecoveryPasswordController extends Controller
 
     public static $rulesUpdate = [
         'token' => 'required|string',
-        'password'  => 'required|string|min:8',
+        'password'  => 'required|string|min:8|confirmed',
 
     ];
 
@@ -96,7 +96,7 @@ class RecoveryPasswordController extends Controller
     {
         $data = $request->validate(self::$rulesUpdate);
 
-        $oldToken = DB::table('password_ressets')->where('token', $data['token'])->first();
+        $oldToken = DB::table('password_resets')->where('token', $data['token'])->first();
 
         if (!$oldToken) {
             return response()->json(['message' => 'Token inválido o inexistente.'], 400);
@@ -105,12 +105,29 @@ class RecoveryPasswordController extends Controller
         //los token solo tienen duracion de 60 minutos
         $expire = config('auth.password.users.expire', 60);
         $createAt = Carbon::parse($oldToken->created_at);
+        
         //verificar hora de creacion del token si aun es valido
-        if(Carbon::now()->diffInMinutes($createAt) > $expire){
-            DB::table('password_ressets')->where('email', $oldToken->email)->delete();
-            return response()-> json([
+        if (Carbon::now()->diffInMinutes($createAt) > $expire) {
+            DB::table('password_resets')->where('email', $oldToken->email)->delete();
+            return response()->json([
                 'message' => 'Token Expirado'
             ]);
         }
+
+        $user = User::where('email', $oldToken->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrado.'
+            ], 404);
+        }
+
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        // Eliminar token usado
+        DB::table('password_resets')->where('email', $oldToken->email)->delete();
+
+        return response()->json(['message' => 'Contraseña actualizada correctamente.'], 200);
     }
 }
