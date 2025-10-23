@@ -22,7 +22,7 @@ Si el botón no funciona, copia y pega la siguiente URL en tu navegador:
 
 <x-mail::footer>
 © {{ date('Y') }} EMENET Comunicaciones.  
-Si necesitas ayuda, responde a este correo o contáctanos al 7131334557.
+Si necesitas ayuda, contáctanos al 7131334557.
 </x-mail::footer>
 
 Thanks,<br>

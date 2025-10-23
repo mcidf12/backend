@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Service\UserService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -51,6 +53,21 @@ class UserController extends Controller
     {
         //
          $user = User::findOrFail($id);
+
+         $servicios = [
+                'estadoCuenta' => [
+                    ['VENTA' => '240042','fechaEmision' => '06-08-2025','importe' => '500.0','mensualidad' => 'AGO 2025'],
+                    ['VENTA' => '246117','fechaEmision' => '05-09-2025','importe' => '600.0','mensualidad' => 'SEP 2025'],
+                    ['VENTA' => '243417','fechaEmision' => '05-10-2025','importe' => '100.0','mensualidad' => 'OCT 2025'],
+                ],
+                'internet' => ['precio' => 400],
+                'camaras'  => ['canServicios' => 1, 'precio' => 50],
+                'telefonia'  => ['lineas' => 1, 'precio' => 150],
+
+            ];
+
+        $fecha = Carbon::now();
+        $resultadoDeuda = UserService::calcularAdeudo($servicios, $fecha);
         
         return response()->json([
             'status' => 'success',
@@ -76,19 +93,9 @@ class UserController extends Controller
                     'estado'      => 'Activo',
                     'estadoFibra' => 'bound'
                 ],
-                'deuda' => 0,
+                'deuda' => $resultadoDeuda,
             ],
-            'servicios' => [
-                'estadoCuenta' => [
-                    ['VENTA' => '240042','fechaEmision' => '06-08-2025','importe' => '500.0','mensualidad' => 'AGO 2025'],
-                    ['VENTA' => '246117','fechaEmision' => '05-09-2025','importe' => '600.0','mensualidad' => 'SEP 2025'],
-                    ['VENTA' => '253512','fechaEmision' => '06-10-2025','importe' => '400.0','mensualidad' => 'OCT 2025'],
-                ],
-                'internet' => ['precio' => 400],
-                'camaras'  => ['canServicios' => 0, 'precio' => 50],
-                'telefonia'  => ['lineas' => 0, 'precio' => 150],
-
-            ],
+            'servicios' => $servicios,
         ]);
     }
     
