@@ -69,10 +69,9 @@ class UserService
         $end = $fecha->copy()->startOfMonth();
 
         while ($cursor->lte($end)) {
-            // llave YYYY-MM
+            // YYYY-MM
             $key = $cursor->format('Y-m');
-            // etiqueta legible (ej. "Oct 2025"). Si quieres en español puedes usar isoFormat con locale
-            $label = $cursor->isoFormat('M Y'); // ejemplo: "Oct 2025"
+            $label = $cursor->isoFormat('M Y'); // "Oct 2025"
             $owedMonths[$key] = $label;
             $count++;
             $totalDue += $monthly;
