@@ -50,7 +50,7 @@ class RecoveryPasswordController extends Controller
 
         $token = $this->createToken($email);
 
-        //Log::info('Enviando correo de recuperación. Token (preview): ' . substr($token, 0, 8) . '...');
+        Log::info('Enviando correo de recuperación. Token (preview): ' . substr($token, 0, 8) . '...');
 
         Mail::to($email)->send(new RecoverPasswordMail($token));
     }

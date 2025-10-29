@@ -58,7 +58,7 @@ class UserController extends Controller
                 'estadoCuenta' => [
                     ['VENTA' => '240042','fechaEmision' => '06-08-2025','importe' => '500.0','mensualidad' => 'AGO 2025'],
                     ['VENTA' => '246117','fechaEmision' => '05-09-2025','importe' => '600.0','mensualidad' => 'SEP 2025'],
-                    ['VENTA' => '243417','fechaEmision' => '05-10-2025','importe' => '100.0','mensualidad' => 'OCT 2025'],
+                    ['VENTA' => '243517','fechaEmision' => '05-10-2025','importe' => '600.0','mensualidad' => 'OCT 2025'],
                 ],
                 'internet' => ['precio' => 400],
                 'camaras'  => ['canServicios' => 1, 'precio' => 50],

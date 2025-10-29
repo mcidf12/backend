@@ -48,14 +48,29 @@ class RecoverPasswordMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content(): Content
+    /*public function content(): Content
     {
     return new Content(
         markdown: 'Email.passwordRecover',
         with: [
             'token' => $this->token,
             'url'   => $this->url,
-        ]);
+        ]
+         view: 'Email.passwordRecover',
+            with: [
+            'token' => $this->token,
+            'url'   => $this->url,
+            ],
+        );
+    }*/
+
+     public function build()
+    {
+        return $this->view('Email.passwordRecover')   // o 'email.passwordRecover' según tu carpeta
+                    ->with([
+                        'token' => $this->token,
+                        'url'   => $this->url,
+                    ]);
     }
 
     /**
