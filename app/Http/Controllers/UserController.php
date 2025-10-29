@@ -17,15 +17,17 @@ class UserController extends Controller
     public static $rules = [
         'name'      => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
+        'phone'     => 'required|string|max:10|regex:/^\d+$/',
         'email'     => 'required|string|max:255|unique:users,email',
         'password'  => 'required|string|min:8',
     ];
 
     public static $rulesUpdate = [
-        'name'      => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'email'     => 'required|string|max:255|unique:users,email',
-        'password'  => 'string|min:8',
+        'name'      => 'sometimes|string|max:255',
+        'last_name' => 'sometimes|string|max:255',
+        'phone'     => 'sometimes|string|max:10|regex:/^\d+$/',
+        'email'     => 'sometimes|required|email|max:255',
+        'password'  => 'sometimes|string|min:8',
 
     ];
 
@@ -80,7 +82,7 @@ class UserController extends Controller
                 'municipio'       => 'JOCOTITLAN',
                 'colonia'         => 'JOCOTITLAN',
                 'correo'          => $user->email,
-                'telefono'        => '7121748293',
+                'telefono'        => $user->phone,
                 'coordenadas'     => '19.569008, -99.756175',
                 'planInternet'    => 'PLAN200',
                 'nombrePlan'      => 'Plan 200 Megas Fibra',
