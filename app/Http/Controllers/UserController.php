@@ -15,9 +15,10 @@ class UserController extends Controller
 
 
     public static $rules = [
-        'name'      => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'phone'     => 'required|string|max:10|regex:/^\d+$/',
+        'cliente'   => 'required|string|max:5|unique:users,cliente',
+        'name'      => 'nullable|sometimes|string|max:255',
+        'last_name' => 'nullable|sometimes|string|max:255',
+        'phone'     => 'nullable|sometimes|string|max:10|regex:/^\d+$/',
         'email'     => 'required|string|max:255|unique:users,email',
         'password'  => 'required|string|min:8',
     ];
@@ -40,54 +41,61 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        $data=$request->validate(self::$rules);
+        $cliente = $this->getClienteData($request->cliente);
+
+        if (!$cliente) {
+            return response()->json(['message' => 'El número de cliente no existe.'], 404);
+        }
+
+        $data = $request->validate(self::$rules);
         $data['password'] = Hash::make($data['password']);
 
         $user = DB::transaction(fn() => User::create($data));
 
-         return response()->json([
+        return response()->json([
             'mensaje' => 'Registro Creado',
             'data'    => $user,
         ], 201);
     }
 
-    public function show($id)
+    public function getClienteData($cliente)
     {
         //
-         $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
 
-         $servicios = [
-                'estadoCuenta' => [
-                    ['VENTA' => '240042','fechaEmision' => '06-08-2025','importe' => '500.0','mensualidad' => 'AGO 2025'],
-                    ['VENTA' => '246117','fechaEmision' => '05-09-2025','importe' => '600.0','mensualidad' => 'SEP 2025'],
-                    ['VENTA' => '243517','fechaEmision' => '05-10-2025','importe' => '600.0','mensualidad' => 'OCT 2025'],
-                ],
-                'internet' => ['precio' => 400],
-                'camaras'  => ['canServicios' => 1, 'precio' => 50],
-                'telefonia'  => ['lineas' => 1, 'precio' => 150],
+        $servicios = [
+            'estadoCuenta' => [
+                ['VENTA' => '240042', 'fechaEmision' => '06-08-2025', 'importe' => '500.0', 'mensualidad' => 'AGO 2025'],
+                ['VENTA' => '246117', 'fechaEmision' => '05-09-2025', 'importe' => '600.0', 'mensualidad' => 'SEP 2025'],
+                ['VENTA' => '243517', 'fechaEmision' => '05-10-2025', 'importe' => '600.0', 'mensualidad' => 'OCT 2025'],
+            ],
+            'internet' => ['precio' => 400],
+            'camaras'  => ['canServicios' => 1, 'precio' => 50],
+            'telefonia'  => ['lineas' => 1, 'precio' => 150],
 
-            ];
+        ];
 
         $fecha = Carbon::now();
         $resultadoDeuda = UserService::calcularAdeudo($servicios, $fecha);
-        
-        return response()->json([
+
+        $clientes = [
             'status' => 'success',
             'cliente' => [
                 'cliente'         => '01804',
-                'nombre'          => strtoupper($user->name).' '.strtoupper($user->last_name ?? ''),
+                //'nombre'          => strtoupper($user->name).' '.strtoupper($user->last_name ?? ''),
+                'nombre'          => 'Marcos Cid Flores',
                 'direccion'       => 'JOSE VALENTIN DAVILA #401',
                 'pais'            => 'Mexico',
                 'estado'          => 'MEXICO',
                 'municipio'       => 'JOCOTITLAN',
                 'colonia'         => 'JOCOTITLAN',
-                'correo'          => $user->email,
-                'telefono'        => $user->phone,
+                'correo'          => 'cid653@gmail',
+                'telefono'        => '7121748293',
                 'coordenadas'     => '19.569008, -99.756175',
                 'planInternet'    => 'PLAN200',
                 'nombrePlan'      => 'Plan 200 Megas Fibra',
                 'clasificacion'   => 'IFO',
-                'desClasificacion'=> 'FIBRA ÓPTICA',
+                'desClasificacion' => 'FIBRA ÓPTICA',
                 'router'          => '1',
                 'infoRed' => [
                     'router'      => 'IXTLAHUACA',
@@ -98,9 +106,19 @@ class UserController extends Controller
                 'deuda' => $resultadoDeuda,
             ],
             'servicios' => $servicios,
-        ]);
+        ];
+
+        return collect($clientes)->firstWhere('cliente', $cliente);
     }
-    
+
+    public function show($cliente)
+    {
+        $data = $this->getClienteData($cliente);
+
+        if (!$data) return response()->json(['message' => 'Cliente no encontrado'], 404);
+
+        return response()->json(['status' => 'success', 'cliente' => $data]);
+    }
 
     public function update(Request $request, $id)
     {
@@ -109,7 +127,7 @@ class UserController extends Controller
         //$user = $request->user();
 
         $validated = $request->validate(array_merge(self::$rulesUpdate, [
-            'email' => ['sometimes','required','email','max:255', Rule::unique('users','email')->ignore($user->id)],
+            'email' => ['sometimes', 'required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
         ]));
 
         if (!empty($validated['password'])) {
@@ -119,12 +137,11 @@ class UserController extends Controller
         }
 
         DB::transaction(fn() => $user->update($validated));
-    
+
         return response()->json([
             'mensaje' => 'Registro Actualizado',
-            'data'    => $user->fresh(), 
+            'data'    => $user->fresh(),
         ]);
-
     }
 
     /**

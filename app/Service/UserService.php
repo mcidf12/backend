@@ -86,4 +86,9 @@ class UserService
             'total_due' => $totalDue,
         ];
     }
+
+    public static function validarCliente($cliente){
+        
+
+    }
 }
