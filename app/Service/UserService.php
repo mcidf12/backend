@@ -36,7 +36,7 @@ class UserService
             $lastPaid = null;
         }
 
-        //monto mensual o importe a pagar
+        //importe a pagar
         $monthly = 0.0;
         if (!empty($servicios['internet']['precio'])) {
             //floatval() convierte un valor a número decimal (float).
@@ -79,10 +79,10 @@ class UserService
         }
 
         return [
-            'lastPaid' => $lastPaid->format('Y-m'),
-            'owedMonths' => $owedMonths,
-            'count' => $count,
-            'monthly_amount' => $monthly,
+            //'lastPaid' => $lastPaid->format('Y-m'),
+            //'owedMonths' => $owedMonths,
+            //'count' => $count,
+            //'monthly_amount' => $monthly,
             'total_due' => $totalDue,
         ];
     }
