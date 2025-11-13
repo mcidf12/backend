@@ -32,8 +32,8 @@ class RecoveryPasswordController extends Controller
         if (!$this->validateEmail($email)) {
             return response()->json([
                 "status" => "error",
-                "message" => "Email no enocntrado"
-            ]);
+                "message" => "Email no enocontrado"
+            ],404);
         }
 
         $this->send($email);
@@ -59,8 +59,8 @@ class RecoveryPasswordController extends Controller
     {
         $oldToken = DB::table('password_resets')->where('email', $email)->first();
 
-        if ($oldToken && isset($oldRecord->token)) {
-            return (string) $oldRecord->token;
+        if ($oldToken && isset($oldToken->token)) {
+            return (string) $oldToken->token;
         }
 
         $token = Str::random(60);

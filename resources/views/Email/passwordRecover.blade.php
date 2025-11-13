@@ -49,8 +49,11 @@
                     cellpadding="0" cellspacing="0" role="presentation">
                     <!-- Header -->
                     <tr>
-                        <td style="background: lightgray; padding:26px 32px; text-align:left;">
-                            
+                        <td >
+                            <img src="{{ $message->embed(public_path('img/emenetLogo.png')) }}" alt="Logo Emenet" width="150"
+
+                                style="max-width: 200px; height: auto; display: block; margin: 0 auto;" />
+
                         </td>
                     </tr>
 
@@ -58,7 +61,8 @@
                     <tr>
                         <td class="inner" style="padding:32px;">
 
-                            <h2 style="margin:0 0 12px 0; font-size:20px; color:#0b2236; font-weight:700;">Restablecer contraseña</h2>
+                            <h2 style="margin:0 0 12px 0; font-size:20px; color:#0b2236; font-weight:700;">Restablecer
+                                contraseña</h2>
 
                             <p style="margin:0 0 18px 0; color:#283142; font-size:14px; line-height:1.6;">
                                 Hemos recibido una solicitud para restablecer la contraseña asociada a tu cuenta en
@@ -67,11 +71,10 @@
                             </p>
 
                             <p style="margin:0 0 18px 0; color:#5b6b7a; font-size:13px;">
-                                Por seguridad, este enlace expirará en <strong>{{ config('auth.passwords.users.expire',
-                                    60) }} minutos</strong>.
+                                Por seguridad, este enlace expirará en <strong>{{ config('auth.passwords.users.expire',60) }} minutos</strong>.
                             </p>
 
-                            
+
                             <table role="presentation" cellpadding="0" cellspacing="0"
                                 style="margin:22px 0; width:100%;">
                                 <tr>
@@ -101,7 +104,7 @@
                         </td>
                     </tr>
 
-                    
+
                     <tr>
                         <td style="background:#f7f9fb; padding:18px 32px; font-size:13px; color:#475569;">
                             <table width="100%" role="presentation">
@@ -114,7 +117,8 @@
                                     <td style="vertical-align:top; text-align: center;width: 212px;">
                                         <strong>Correo</strong><br>
                                         <div style="margin-top:6px;"><a href="tel:7131334557"
-                                                style="color:#0b6efd; text-decoration:none;">clientes@emenet.mx</a></div>
+                                                style="color:#0b6efd; text-decoration:none;">clientes@emenet.mx</a>
+                                        </div>
                                     </td>
                                     <td style="vertical-align:top; text-align:right;width: 212px;">
                                         <strong>Pagina web</strong><br>
@@ -125,9 +129,10 @@
                         </td>
                     </tr>
 
-                    
+
                     <tr>
-                        <td style="padding:18px 32px 28px 32px; text-align:center;background: lightgray; font-size:12px;">
+                        <td
+                            style="padding:18px 32px 28px 32px; text-align:center;background: lightgray; font-size:12px;">
                             © {{ date('Y') }} EMENET Comunicaciones. Todos los derechos reservados.<br>
                             <div style="margin-top:8px; font-size:11px;">
                                 No compartas informacion personal
@@ -136,7 +141,7 @@
                     </tr>
 
                 </table>
-                
+
 
             </td>
         </tr>

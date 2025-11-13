@@ -54,15 +54,6 @@ class UserController extends Controller
             ->withoutVerifying()
             ->get('https://dev.emenet.mx/api/clientesV2/' . $cliente);
 
-        //si ya existe
-        $existeUsuario = User::where('cliente', $cliente)->exists();
-        if ($existeUsuario) {
-            return response()->json([
-                'message' => 'Este cliente ya tiene una cuenta registrada.'
-            ], 409);
-        }
-        
-
         //en caso de fallar la peticion
         if ($peticion->failed()) {
             if ($peticion->status() === 404) {
@@ -74,6 +65,14 @@ class UserController extends Controller
         }
 
         $clienteData = $peticion->json();
+
+        //si ya existe
+        $existeUsuario = User::where('cliente', $cliente)->exists();
+        if ($existeUsuario) {
+            return response()->json([
+                'message' => 'Este cliente ya tiene una cuenta registrada.'
+            ], 409);
+        }        
 
         $data = $request->validate(self::$rules);
         $data['password'] = Hash::make($data['password']);
@@ -94,6 +93,7 @@ class UserController extends Controller
     {
         //
         //$user = User::findOrFail($id);
+        
 
         $servicios = [
             'estadoCuenta' => [

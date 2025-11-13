@@ -27,7 +27,8 @@ class RecoverPasswordMail extends Mailable
         //
         $this->token = is_object($token) ? (string) ($token->token ?? json_encode($token)) : (string) $token;
 
-        $this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
+        //$this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
+        $this->url = 'http://192.168.110.101:4200/response-password?token=' . urlencode($this->token);
         //Log::info('Recover URL: ' . $this->url);
     }
 
@@ -39,7 +40,7 @@ class RecoverPasswordMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Recover Password Mail',
+            subject: 'Recuperacion de contraseña',
         );
     }
 
@@ -48,30 +49,26 @@ class RecoverPasswordMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    /*public function content(): Content
+    public function content(): Content
     {
-    return new Content(
-        markdown: 'Email.passwordRecover',
-        with: [
-            'token' => $this->token,
-            'url'   => $this->url,
-        ]
-         view: 'Email.passwordRecover',
+     return new Content(
+            view: 'email.passwordRecover', // vista blade
             with: [
-            'token' => $this->token,
-            'url'   => $this->url,
-            ],
+                'token' => $this->token,
+                'url'   => $this->url,
+            ]
+            
         );
-    }*/
-
-     public function build()
-    {
-        return $this->view('Email.passwordRecover')   // o 'email.passwordRecover' según tu carpeta
-                    ->with([
-                        'token' => $this->token,
-                        'url'   => $this->url,
-                    ]);
     }
+
+    /*public function build()
+    {
+        return $this->view('email.passwordRecover')
+                ->with([
+                    'token' => $this->token,
+                    'url'   => $this->url,
+                ]);
+    }*/
 
     /**
      * Get the attachments for the message.
