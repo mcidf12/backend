@@ -43,7 +43,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // $this->getClienteData
+        //
         $cliente = $request->cliente;
 
         //crear peticion con cabecera

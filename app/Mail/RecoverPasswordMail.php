@@ -28,8 +28,8 @@ class RecoverPasswordMail extends Mailable
         $this->token = is_object($token) ? (string) ($token->token ?? json_encode($token)) : (string) $token;
 
         //$this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
-        $this->url = 'http://192.168.110.101:4200/response-password?token=' . urlencode($this->token);
-        //Log::info('Recover URL: ' . $this->url);
+        $this->url = 'http://192.168.110.108:4200/response-password?token=' . urlencode($this->token);
+        Log::info('Recover URL: ' . $this->url);
     }
 
     /**
@@ -49,7 +49,7 @@ class RecoverPasswordMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content(): Content
+    /*public function content(): Content
     {
      return new Content(
             view: 'email.passwordRecover', // vista blade
@@ -59,16 +59,16 @@ class RecoverPasswordMail extends Mailable
             ]
             
         );
-    }
+    }*/
 
-    /*public function build()
+    public function build()
     {
         return $this->view('email.passwordRecover')
                 ->with([
                     'token' => $this->token,
                     'url'   => $this->url,
                 ]);
-    }*/
+    }
 
     /**
      * Get the attachments for the message.
