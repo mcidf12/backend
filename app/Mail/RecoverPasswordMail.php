@@ -49,7 +49,7 @@ class RecoverPasswordMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    /*public function content(): Content
+    public function content(): Content
     {
      return new Content(
             view: 'email.passwordRecover', // vista blade
@@ -59,16 +59,16 @@ class RecoverPasswordMail extends Mailable
             ]
             
         );
-    }*/
+    }
 
-    public function build()
+    /*public function build()
     {
         return $this->view('email.passwordRecover')
                 ->with([
                     'token' => $this->token,
                     'url'   => $this->url,
                 ]);
-    }
+    }*/
 
     /**
      * Get the attachments for the message.
