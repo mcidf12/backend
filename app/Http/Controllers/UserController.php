@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Service\UserService;
@@ -79,6 +80,14 @@ class UserController extends Controller
 
 
         $user = DB::transaction(fn() => User::create($data));
+
+
+        
+        $user->sendEmailVerificationNotification();
+
+        event(new Registered($user));
+
+
 
         return response()->json([
             'mensaje' => 'Registro Creado',
