@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
-    <title>Restablecer contraseña</title>
+    <title>Verificacion de correo</title>
     <style>
         body {
             margin: 0;
@@ -64,8 +64,8 @@
                             <h2 style="margin:0 0 12px 0; font-size:20px; color:#0b2236; font-weight:700;">Verificacion de Correo</h2>
 
                             <p style="margin:0 0 18px 0; color:#283142; font-size:14px; line-height:1.6;">
-                                Confirma el correo registrado a tu cuenta de<strong>EMENET Comunicaciones</strong>. 
-                                , para cpntinuar haz click en el siguiente enlace
+                                Confirma el correo registrado a tu cuenta de<strong> EMENET Comunicaciones</strong>. 
+                                , para continuar haz click en el siguiente enlace
                             </p>
 
                             <p style="margin:0 0 18px 0; color:#5b6b7a; font-size:13px;">

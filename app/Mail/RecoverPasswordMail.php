@@ -27,8 +27,8 @@ class RecoverPasswordMail extends Mailable
         //
         $this->token = is_object($token) ? (string) ($token->token ?? json_encode($token)) : (string) $token;
 
-        //$this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
-        $this->url = 'http://192.168.110.101:4200/response-password?token=' . urlencode($this->token);
+        $this->url = 'http://localhost:4200/response-password?token=' . urlencode($this->token);
+        //$this->url = 'http://192.168.110.101:4200/response-password?token=' . urlencode($this->token);
         Log::info('Recover URL: ' . $this->url);
     }
 

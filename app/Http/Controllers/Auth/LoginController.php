@@ -30,6 +30,13 @@ class LoginController extends Controller
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
+
+        
+        if(!$user->hasVerifiedEmail()){
+            return response()->json(['message' => 'Cuenta no verificada'], 403);
+        }
+
+
         //$user->tokens()->delete();
         $tokenName = $credentials['email'] ?? $credentials['cliente'];
         $token = $user->createToken($tokenName)->plainTextToken;

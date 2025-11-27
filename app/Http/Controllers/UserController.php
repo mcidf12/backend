@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\verifyEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 //use Illuminate\Support\Facades\Log;
 
@@ -78,17 +80,15 @@ class UserController extends Controller
         $data = $request->validate(self::$rules);
         $data['password'] = Hash::make($data['password']);
 
-
         $user = DB::transaction(fn() => User::create($data));
 
-
         
-        $user->sendEmailVerificationNotification();
-
+        //$user->sendEmailVerificationNotification();
         event(new Registered($user));
 
-
-
+        Log::info('Evento Registered disparado', ['user_id' => $user->id]);
+        //Mail::to($user->email)->send(new verifyEmail());
+        
         return response()->json([
             'mensaje' => 'Registro Creado',
             'data'    => $user,
@@ -98,10 +98,10 @@ class UserController extends Controller
 
 
 
-    public function getClienteData($cliente)
+    public function getClienteData($id)
     {
         //
-        //$user = User::findOrFail($id);
+        $user = User::findOrFail($id);
         
 
         $servicios = [
